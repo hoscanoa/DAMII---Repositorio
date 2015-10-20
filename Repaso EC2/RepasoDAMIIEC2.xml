@@ -243,6 +243,11 @@ private async void button1_Click(object sender, EventArgs e)
 
 
 
+Empleado empleado = new Empleado();
+empleado.Genero = ((Genero)(cboGenero.SelectItem)).DescripcionGenero;
+emleado.fechaNac = fecNac.Value.Value;
+
+
 /////////////////////////
 
 WebService
