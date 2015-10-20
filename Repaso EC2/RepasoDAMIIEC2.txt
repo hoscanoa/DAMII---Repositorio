@@ -1,0 +1,345 @@
+<phone:PhoneApplicationPage
+    x:Class="AppRRHH.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
+    <phone:Pivot>
+        <phone:PivotItem Header="Agregar">
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Nombres"/>
+                    <TextBox Name="txtNombres"/>
+                    <TextBlock Text="DNI"/>
+                    <TextBox Name="txtDNI"/>
+                    <TextBlock Text="Ubicación"/>
+                    <toolkit:AutoCompleteBox Name="autoUbicacion" FilterMode="Contains" ValueMemberBinding="{Binding DescripcionUbigeo}">
+                        <toolkit:AutoCompleteBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DescripcionUbigeo}">                                    
+                                </TextBlock>
+                            </DataTemplate>
+                        </toolkit:AutoCompleteBox.ItemTemplate> 
+                    </toolkit:AutoCompleteBox>
+                    <TextBlock Text="Dirección"/>
+                    <TextBox Name="txtDirección"/>
+                    <TextBlock Text="Género"/>
+                    <toolkit:ListPicker Name="cboGenero">
+                        <toolkit:ListPicker.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DescripcionGenero}"></TextBlock>
+                            </DataTemplate>
+                        </toolkit:ListPicker.ItemTemplate>
+                    </toolkit:ListPicker>
+                    <TextBlock Text="Fecha Nac."/>
+                    <toolkit:DatePicker/>
+                    <Button Content="Grabar"/>
+                </StackPanel>
+            </ScrollViewer>
+        </phone:PivotItem>
+        <phone:PivotItem Header="Buscar">
+            
+        </phone:PivotItem>
+        <phone:PivotItem Header="Configuración">
+
+        </phone:PivotItem>
+    </phone:Pivot>
+    
+
+</phone:PhoneApplicationPage>
+
+
+////////////////////////
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using AppRRHH.Resources;
+
+namespace AppRRHH
+{
+    public partial class MainPage : PhoneApplicationPage
+    {
+        MyDataContext db = new MyDataContext(MyDataContext.cadenaConexion);
+
+        // Constructor
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+
+        void CrearBD()
+        {
+            if (!db.DatabaseExists())
+            {
+                db.CreateDatabase();
+                Genero g = new Genero()
+                {
+                    DescripcionGenero = "Masculino"
+                };
+                db.ListaGeneros.InsertOnSubmit(g);
+                g = new Genero()
+                {
+                    DescripcionGenero = "Femenino"
+                };
+                db.ListaGeneros.InsertOnSubmit(g);
+                db.SubmitChanges();
+
+                Ubigeo u = new Ubigeo()
+                {
+                    DescripcionUbigeo = "Lima/Lima/Surco"
+                };
+                db.ListaUbigeos.InsertOnSubmit(u);
+
+                u = new Ubigeo()
+                {
+                    DescripcionUbigeo = "Lima/Lima/Surquillo"
+                };
+                db.ListaUbigeos.InsertOnSubmit(u);
+
+                u = new Ubigeo()
+                {
+                    DescripcionUbigeo = "Ica/Ica/Pisco"
+                };
+                db.ListaUbigeos.InsertOnSubmit(u);
+
+                u = new Ubigeo()
+                {
+                    DescripcionUbigeo = "Lima/Lima/Independencia"
+                };
+                db.ListaUbigeos.InsertOnSubmit(u);
+                db.SubmitChanges();
+            }
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            CrearBD();
+            cboGenero.ItemsSource = db.ListaGeneros;
+            autoUbicacion.ItemsSource = db.ListaUbigeos;
+        }
+      
+
+    }
+}
+
+
+////////////////////////////////////
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+
+namespace AppRRHH
+{
+    public class MyDataContext:DataContext
+    {
+        public static string cadenaConexion = "Data Source=isostore:/RRHH.sdf";
+        public Table<Genero> ListaGeneros;
+        public Table<Ubigeo> ListaUbigeos;
+
+        public MyDataContext(string cadenaConexion):
+            base(cadenaConexion)
+        {
+        }
+    }
+}
+
+
+
+//////////////////////////////////////
+
+Cliente 
+
+
+private async void button1_Click(object sender, EventArgs e)
+        {
+            string url = "http://localhost:1256/api/Empleado?DNI=" + txtDni.Text;
+            HttpClient cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Accept.Clear();
+            cliente.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            string resultado = await cliente.GetStringAsync(url);
+
+            Empleado empleado = Newtonsoft.Json.JsonConvert.DeserializeObject<Empleado>(resultado);
+            txtNombre.Text = empleado.nombre;
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            Empleado empleado = new Empleado();
+            empleado.DNI = txtDni.Text;
+            empleado.nombre = txtNombre.Text;
+            empleado.Direccion = txtDireccion.Text;
+            empleado.Ubicacion = txtUbigeo.Text;
+            if(rdbMasculino.Checked)
+            {
+                empleado.Genero="M";
+            }
+            else
+            {
+                empleado.Genero = "F";
+            }
+            empleado.FecNac = dtpFechaNacimiento.Value;
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(empleado);
+            HttpClient cliente = new HttpClient();
+            string url = "http://localhost:1256/api/Empleado";
+
+            var resultado = await cliente.PostAsync(url, new StringContent(json,System.Text.Encoding.UTF8,"application/json"));
+
+        }
+
+        public async Task<HttpResponseMessage> obtenerEmpleados()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:1256/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                return await client.GetAsync("api/Empleado/");
+            }
+        }
+
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+
+            HttpResponseMessage response = await obtenerEmpleados();
+
+            if (response.IsSuccessStatusCode)
+            {
+                String responseContent = await response.Content.ReadAsStringAsync();
+                List<Empleado> empleados = JsonConvert.DeserializeObject<List<Empleado>>(responseContent);
+               
+                foreach(Empleado emp in empleados)
+                {
+                    lbEmpleados.Items.Add(emp.DNI +" - "+emp.nombre);
+                }
+            }
+        }
+
+
+
+/////////////////////////
+
+WebService
+
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+
+namespace Servicio.Models
+{
+    public class MyDataContext:DbContext
+    {
+        public DbSet<Empleado> listaEmpelados { get; set; }
+    }
+}
+
+
+
+
+
+
+///////////////////////////
+
+
+
+
+
+using Servicio.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace Servicio.Controllers
+{
+    public class EmpleadoController : ApiController
+    {
+        MyDataContext db = new MyDataContext();
+        // GET api/empleado
+        public IEnumerable<Empleado> Get()
+        {
+            return db.listaEmpelados.ToList();
+        }
+
+        // GET api/empleado/5
+        public Empleado Get(string DNI)
+        {
+            return db.listaEmpelados.Where(x=>x.DNI.Equals(DNI)).SingleOrDefault();
+        }
+
+        // POST api/empleado
+        public void Post(Empleado empleado)
+        {
+            db.listaEmpelados.Add(empleado);
+            db.SaveChanges();
+        }
+
+        // PUT api/empleado/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE api/empleado/5
+        public void Delete(int id)
+        {
+        }
+    }
+}
+
+
+
+///////////////////////////////////////////7
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Servicio.Models
+{
+    public class Empleado
+    {
+        public int EmpleadoId { get; set; }
+        public string nombre { get; set; }
+        public string DNI { get; set; }
+        public string Ubicacion { get; set; }
+        public string Direccion { get; set; }
+        public string Genero { get; set; }
+        public DateTime FecNac { get; set; }
+    }
+}
+
+
+
+
