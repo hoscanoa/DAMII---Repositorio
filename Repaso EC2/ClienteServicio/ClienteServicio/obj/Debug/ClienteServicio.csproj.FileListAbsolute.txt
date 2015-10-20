@@ -1,0 +1,16 @@
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\ClienteServicio.exe.config
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\ClienteServicio.exe
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\ClienteServicio.pdb
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.csprojResolveAssemblyReference.cache
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.Form1.resources
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.Properties.Resources.resources
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.csproj.GenerateResource.Cache
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.exe
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.pdb
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\Newtonsoft.Json.dll
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\System.Net.Http.Extensions.dll
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\System.Net.Http.Primitives.dll
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\Newtonsoft.Json.xml
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\System.Net.Http.Extensions.xml
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\bin\Debug\System.Net.Http.Primitives.xml
+c:\users\consultor\documents\visual studio 2013\Projects\ClienteServicio\ClienteServicio\obj\Debug\ClienteServicio.csproj.App.config

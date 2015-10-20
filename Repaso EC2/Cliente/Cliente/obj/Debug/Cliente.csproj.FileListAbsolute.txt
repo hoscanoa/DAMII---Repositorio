@@ -1,0 +1,6 @@
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\bin\Debug\Cliente.exe.config
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\bin\Debug\Cliente.exe
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\bin\Debug\Cliente.pdb
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\obj\Debug\Cliente.csprojResolveAssemblyReference.cache
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\obj\Debug\Cliente.exe
+c:\users\consultor\documents\visual studio 2013\Projects\Cliente\Cliente\obj\Debug\Cliente.pdb
